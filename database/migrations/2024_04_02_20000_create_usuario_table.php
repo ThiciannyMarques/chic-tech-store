@@ -30,7 +30,7 @@ return new class extends Migration
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('usuario_id')->nullable()->index();
+            $table->foreignId('usuario_id')->nullable()->index()->references('id')->on('usuarios');
             $table->string('ip_address', 45)->nullable();
             $table->text('usuario_agent')->nullable();
             $table->longText('payload');
