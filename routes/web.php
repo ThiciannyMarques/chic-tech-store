@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\AdminMiddleware;
+use GuzzleHttp\Middleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,10 +27,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::group(['prefix'=> 'admin', 'middleware' => 'redirectAdmin'], function() {
+    Route::get('login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+    Route::get('login', [AdminController::class, 'login'])->name('admin.login.post');
+    Route::get('logout', [AdminController::class, 'logout'])->name('admin.login.logout');
+});
 
 //rotas de administrador
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function(){
-        Route::get('/painel-de-controle', [AdminController::class, 'index'])->name('admin.painel-de-controle');
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 });
 
 require __DIR__.'/auth.php';
