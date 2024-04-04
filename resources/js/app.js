@@ -6,6 +6,12 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+
+import VueSweetalert2 from 'vue-sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css'
+
 
 createInertiaApp({
     title: (title) => `${title}`,
@@ -14,7 +20,9 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
-            .mount(el);
+            .use(ElementPlus)
+            .use(VueSweetalert2)
+            .mount(el)
     },
     progress: {
         color: '#4B5563',

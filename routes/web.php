@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ProdutoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Models\Produto;
 use GuzzleHttp\Middleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -28,14 +31,17 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::group(['prefix'=> 'admin', 'middleware' => 'redirectAdmin'], function() {
-    Route::get('login', [AdminController::class, 'showLoginForm'])->name('admin.login');
-    Route::get('login', [AdminController::class, 'login'])->name('admin.login.post');
-    Route::get('logout', [AdminController::class, 'logout'])->name('admin.login.logout');
+    Route::get('login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+    Route::post('login', [AdminAuthController::class, 'login'])->name('admin.login.post');
+    Route::get('logout', [AdminAuthController::class, 'logout'])->name('admin.login.logout');
 });
 
 //rotas de administrador
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function(){
         Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+
+        Route::get('/produtos', [ProdutoController::class, 'index'])->name('admin.produtos.index');
+        Route::post('/produtos/store', [ProdutoController::class, 'store'])->name('admin.produtos.store');
 });
 
 require __DIR__.'/auth.php';

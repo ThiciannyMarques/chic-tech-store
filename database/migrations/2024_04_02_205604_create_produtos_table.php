@@ -24,11 +24,11 @@ return new class extends Migration
             $table->boolean('emEstoque')->default(0);
             $table->decimal('preco', 10, 2);
             $table->foreignIdFor(Usuario::class, 'created_by')->nullable();
-            $table->foreignId(Usuario::class, 'updated_by')->nullable();
+            $table->foreignIdFor(Usuario::class, 'updated_by')->nullable();
             $table->foreignIdFor(Marca::class, 'marca_id')->nullable();
             $table->foreignIdFor(Categoria::class, 'categoria_id')->nullable();
             $table->softDeletes();
-            $table->foreignIdFor(Usuario::class, 'deleted_by')->nullable();
+            $table->foreignIdFor(Usuario::class, 'deleted_by')->nullable();        
             $table->timestamps();
         });
     }
