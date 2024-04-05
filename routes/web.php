@@ -39,7 +39,6 @@ Route::group(['prefix'=> 'admin', 'middleware' => 'redirectAdmin'], function() {
 //rotas de administrador
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function(){
         Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-
         Route::get('/produtos', [ProdutoController::class, 'index'])->name('admin.produtos.index');
         Route::post('/produtos/store', [ProdutoController::class, 'store'])->name('admin.produtos.store');
 });
