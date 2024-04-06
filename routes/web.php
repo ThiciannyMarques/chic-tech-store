@@ -30,17 +30,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::group(['prefix'=> 'admin', 'middleware' => 'redirectAdmin'], function() {
+Route::group(['prefix' => 'admin', 'middleware' => 'redirectAdmin'], function () {
     Route::get('login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
     Route::post('login', [AdminAuthController::class, 'login'])->name('admin.login.post');
     Route::get('logout', [AdminAuthController::class, 'logout'])->name('admin.login.logout');
 });
 
 //rotas de administrador
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function(){
-        Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-        Route::get('/produtos', [ProdutoController::class, 'index'])->name('admin.produtos.index');
-        Route::post('/produtos/store', [ProdutoController::class, 'store'])->name('admin.produtos.store');
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/produtos', [ProdutoController::class, 'index'])->name('admin.produtos.index');
+    Route::post('/produtos/store', [ProdutoController::class, 'store'])->name('admin.produtos.store');
+    Route::put('/produtos/update/{id}', [ProdutoController::class, 'update'])->name('admin.produtos.update');
+    Route::delete('/produtos/imagem/{id}', [ProdutoController::class, 'deletaImagem'])->name('admin.produtos.imagem.deleta');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

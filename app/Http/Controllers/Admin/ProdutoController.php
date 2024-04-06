@@ -16,7 +16,7 @@ class ProdutoController extends Controller
 
 	public function index()
 	{
-		$produtos = Produto::with('categoria', 'marca')->get();
+		$produtos = Produto::with('categoria', 'marca', 'produto_imagens')->get();
 		$marcas = Marca::get();
 		$categorias = Categoria::get();
 
@@ -29,7 +29,7 @@ class ProdutoController extends Controller
 
 	public function store(Request $request)
 	{
-		
+
 		$produto = new Produto;
 		$produto->titulo = $request->titulo;
 		$produto->preco = $request->preco;
@@ -54,5 +54,39 @@ class ProdutoController extends Controller
 		}
 
 		return redirect()->route('admin.produtos.index')->with('Sucesso', 'Produto foi criado com sucesso.');
+	}
+
+	public function update(Request $request, $id)
+	{
+		$produto = Produto::findOrFail($id);
+		$produto->titulo = $request->titulo;
+		$produto->preco = $request->preco;
+		$produto->quantidade = $request->quantidade;
+		$produto->descricao = $request->descricao;
+		$produto->categoria_id = $request->categoria_id;
+		$produto->marca_id = $request->marca_id;
+
+		if ($request->hasFile('produto_imagens')) {
+			$produtoImagens = $request->file('produto_imagens');
+
+			foreach ($produtoImagens as $imagem) {
+				$nomeUnico = time() . '-' . Str::random(10) . '.' . $imagem->getClientOriginalExtension();
+				$imagem->move('produto_imagens', $nomeUnico);
+
+				ProdutoImagem::create([
+					'produto_id' => $produto->id,
+					'imagem' => 'produto_imagens/' . $nomeUnico,
+				]);
+			}
+		}
+
+		$produto->update();
+	}
+
+	public function deletaImagem($id)
+	{
+		$imagem = ProdutoImagem::where('id', $id)->delete();
+
+		return redirect()->route('admin.produtos.index')->with('success', 'Imagem deletada com sucesso!');
 	}
 }
