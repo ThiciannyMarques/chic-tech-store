@@ -7,7 +7,7 @@
     import AdminLayout from '../Components/AdminLayout.vue'
     import ListaProdutos from './ListaProdutos.vue'
 
-    props({
+    defineProps({
         produtos:Array
     })
 </script>

@@ -326,7 +326,12 @@ import { router, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue'
 import { Plus } from '@element-plus/icons-vue'
 
-const produtos = usePage().props.produtos
+
+defineProps({
+	produtos:Array
+})
+
+
 const marcas = usePage().props.marcas
 const categorias = usePage().props.categorias
 
@@ -392,7 +397,6 @@ const AddProduto = async () => {
 			},
 			
 		})
-		window.location.reload();
 	} catch (err) {
 		console.log(err)
 	}
@@ -481,7 +485,6 @@ const editarProduto = async () => {
 				})
 			}
 		})
-		window.location.reload();
 	} catch {
 
 		console.log(err)
