@@ -16,7 +16,7 @@ class ProdutoController extends Controller
 
 	public function index()
 	{
-		$produtos = Produto::get();
+		$produtos = Produto::with('categoria', 'marca')->get();
 		$marcas = Marca::get();
 		$categorias = Categoria::get();
 
