@@ -43,6 +43,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/produtos/store', [ProdutoController::class, 'store'])->name('admin.produtos.store');
     Route::put('/produtos/update/{id}', [ProdutoController::class, 'update'])->name('admin.produtos.update');
     Route::delete('/produtos/imagem/{id}', [ProdutoController::class, 'deletaImagem'])->name('admin.produtos.imagem.deleta');
+    Route::delete('/produtos/deleta/{id}', [ProdutoController::class, 'deleta'])->name('admin.produtos.deleta');
+
+
+    
+
 });
 
 require __DIR__ . '/auth.php';

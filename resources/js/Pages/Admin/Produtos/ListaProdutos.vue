@@ -81,7 +81,6 @@
 			</template>
 		</el-dialog>
 		<div class="mx-auto max-w-screen-xl px-4 lg:px-12">
-			<!-- Start coding here -->
 			<div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
 				<div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
 					<div class="w-full md:w-1/2">
@@ -114,30 +113,7 @@
 							Adicionar produtos
 						</button>
 						<div class="flex items-center space-x-3 w-full md:w-auto">
-							<button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown"
-								class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-								type="button">
-								<svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20"
-									xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-									<path clip-rule="evenodd" fill-rule="evenodd"
-										d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-								</svg>
-								Ações
-							</button>
-							<div id="actionsDropdown"
-								class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-								<ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
-									<li>
-										<a href="#"
-											class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Editar</a>
-									</li>
-								</ul>
-								<div class="py-1">
-									<a href="#"
-										class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Deletar
-										Tudo</a>
-								</div>
-							</div>
+							
 							<button id="filterDropdownButton" data-dropdown-toggle="filterDropdown"
 								class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
 								type="button">
@@ -212,7 +188,7 @@
 						<tbody>
 							<tr v-for="produto in produtos" :key="produto.id" class="border-b dark:border-gray-700">
 								<th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
-									produto.titulo }}</th>
+								tituloCurto(produto.titulo, 65) }}</th>
 								<td class="px-4 py-3">{{ produto.categoria.nome }}</td>
 								<td class="px-4 py-3">{{ produto.marca.nome }}</td>
 								<!-- <td class="px-4 py-3">{{  produto.descricao }}</td> -->
@@ -251,7 +227,7 @@
 											</li>
 										</ul>
 										<div class="py-1">
-											<a href="#"
+											<a href="#" @click="excluirProduto(produto, index)"
 												class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Deletar</a>
 										</div>
 									</div>
@@ -368,6 +344,14 @@ const categoria_id = ref('')
 const marca_id = ref('')
 const emEstoque = ref('')
 
+const tituloCurto = (titulo,tamanhoMax)  => {
+	if (titulo.length >tamanhoMax) {
+		return titulo.slice(0,tamanhoMax) + "...";
+	} else {
+		return titulo;
+	}
+}
+		
 const AddProduto = async () => {
 	const formData = new FormData();
 	formData.append('titulo', titulo.value)
@@ -401,10 +385,6 @@ const AddProduto = async () => {
 		console.log(err)
 	}
 }
-const excluirProduto = (produto, id) => {
-	console.log(produto, id)
-}
-
 const resetarDadosFormulario = () => {
 	id.value = '';
 	titulo.value = '';
@@ -489,6 +469,44 @@ const editarProduto = async () => {
 
 		console.log(err)
 	}
+
+	
 }
+
+
+const excluirProduto = (produto, id) => {
+	Swal.fire({
+		titilo: 'Você tem certeza?',
+		text: '*Essa ação não poderá ser desfeita!',
+		icon: 'warning',
+		showConfirmButton: true,
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		cancelButtonText: 'não',
+		confirmButtonText: 'sim, deletar!'
+	}).then((result)=>{
+		if(result.isConfirmed){
+			try{
+				router.delete('produtos/deleta/'+produto.id), {
+					onSuccess: (page)=>{
+						this.delete(produto, index)
+						Swal.fire({
+							toast: true,
+							icon: 'success',
+							position: 'top-end',
+							showConfirmButton: false,
+							title: page.preps.flash.success
+						})
+					}
+				}
+			}catch(err){
+				console.log(err)
+			}
+		}
+	})
+	console.log(produto, id)
+}
+
 
 </script>
