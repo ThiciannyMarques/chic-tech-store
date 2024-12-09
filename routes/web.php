@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\ProdutoController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Middleware\AdminMiddleware;
-use App\Models\Produto;
+use App\Models\Product;
 use GuzzleHttp\Middleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,8 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/', [UserController::class, 'index'])->name('user.home');
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -33,17 +36,17 @@ Route::middleware('auth')->group(function () {
 Route::group(['prefix' => 'admin', 'middleware' => 'redirectAdmin'], function () {
     Route::get('login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
     Route::post('login', [AdminAuthController::class, 'login'])->name('admin.login.post');
-    Route::get('logout', [AdminAuthController::class, 'logout'])->name('admin.login.logout');
+    Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');
 });
 
 //rotas de administrador
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/produtos', [ProdutoController::class, 'index'])->name('admin.produtos.index');
-    Route::post('/produtos/store', [ProdutoController::class, 'store'])->name('admin.produtos.store');
-    Route::put('/produtos/update/{id}', [ProdutoController::class, 'update'])->name('admin.produtos.update');
-    Route::delete('/produtos/imagem/{id}', [ProdutoController::class, 'deletaImagem'])->name('admin.produtos.imagem.deleta');
-    Route::delete('/produtos/deleta/{id}', [ProdutoController::class, 'deleta'])->name('admin.produtos.deleta');
+    Route::get('/products', [ProductController::class, 'index'])->name('admin.products.index');
+    Route::post('/products/store', [ProductController::class, 'store'])->name('admin.products.store');
+    Route::put('/products/update/{id}', [ProductController::class, 'update'])->name('admin.products.update');
+    Route::delete('/products/image/{id}', [ProductController::class, 'deletaimage'])->name('admin.products.image.deleta');
+    Route::delete('/products/deleta/{id}', [ProductController::class, 'deleta'])->name('admin.products.deleta');
 
 
     

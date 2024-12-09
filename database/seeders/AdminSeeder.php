@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Usuario;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Auth\User;
@@ -15,8 +14,8 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        Usuario::create([
-            'nome' => 'admin',
+        user::create([
+            'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password'=>Hash::make('password'),
             'isAdmin'=> 1

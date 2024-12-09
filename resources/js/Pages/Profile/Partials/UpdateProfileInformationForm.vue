@@ -14,11 +14,11 @@ defineProps({
     },
 });
 
-const usuario = usePage().props.auth.usuario;
+const user = usePage().props.auth.user;
 
 const form = useForm({
-    nome: usuario.nome,
-    email: usuario.email,
+    name: user.name,
+    email: user.email,
 });
 </script>
 
@@ -34,19 +34,19 @@ const form = useForm({
 
         <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6 space-y-6">
             <div>
-                <InputLabel for="nome" value="nome" />
+                <InputLabel for="name" value="name" />
 
                 <TextInput
-                    id="nome"
+                    id="name"
                     type="text"
                     class="mt-1 block w-full"
-                    v-model="form.nome"
+                    v-model="form.name"
                     required
                     autofocus
-                    autocomplete="nome"
+                    autocomplete="name"
                 />
 
-                <InputError class="mt-2" :message="form.errors.nome" />
+                <InputError class="mt-2" :message="form.errors.name" />
             </div>
 
             <div>
@@ -64,7 +64,7 @@ const form = useForm({
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div v-if="mustVerifyEmail && usuario.email_verified_at === null">
+            <div v-if="mustVerifyEmail && user.email_verified_at === null">
                 <p class="text-sm mt-2 text-gray-800">
                     Your email address is unverified.
                     <Link
