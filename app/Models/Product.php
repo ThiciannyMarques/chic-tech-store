@@ -17,7 +17,7 @@ class Product extends Model
         'slug',
         'description',
         'publish',
-        'inStoke',
+        'inStock',
         'price',
         'created_by',
         'deleted_by',

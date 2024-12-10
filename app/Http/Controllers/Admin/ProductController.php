@@ -43,7 +43,6 @@ class ProductController extends Controller
 			$productimages = $request->file('product_images');
 			foreach ($productimages as $image) {
 				$uniqueName = time() . '-' . Str::random(10) . '.' . $image->getClientOriginalExtension();
-
 				$image->move('product_images', $uniqueName);
 
 				ProductImage::create([
