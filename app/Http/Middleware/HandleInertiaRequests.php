@@ -36,19 +36,19 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'ziggy'=> fn()=> [
+            'ziggy' => fn() => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url()
             ],
-            'flash' =>[
-                'success' =>  fn () => $request -> session()->get('success'),
-                'error' =>  fn () => $request -> session()->get('error'),
-                'warning' =>  fn () => $request -> session()->get('warning'),
-                'info' =>  fn () => $request -> session()->get('info')
+            'flash' => [
+                'success' => fn() => $request->session()->get('success'),
+                'error' => fn() => $request->session()->get('error'),
+                'warning' => fn() => $request->session()->get('warning'),
+                'info' => fn() => $request->session()->get('info')
             ],
             'canLogin' => app('router')->has('login'),
             'canRegister' => app('router')->has('register'),
-            'laravelVersion'=> Application::VERSION,
+            'laravelVersion' => Application::VERSION,
             'phpVersion' => PHP_VERSION,
         ];
 
